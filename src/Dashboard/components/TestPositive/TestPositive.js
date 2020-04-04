@@ -44,91 +44,81 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TestPositive = props => {
-  const { className, ...rest } = props;
+  const { className, data, ...rest } = props;
 
   const classes = useStyles();
   const posRef = useRef(null);
   const rateRef = useRef(null);
-  
-  const switchURL = () => {
-    if ( props.state == '' ) {
-      return json("https://covidtracking.com/api/us/daily")
-    } else {
-      return json(`https://covidtracking.com/api/states/daily?state=${props.state}`)
-    }
-  };
 
- 
+
   useEffect(()=> {
+    if (data !== null) {
+      d3.select(rateRef.current).selectAll('p').text('');
 
-    d3.select(rateRef.current).selectAll('p').text('');
-      
-      switchURL().then(data=>{
-          
-          
-          var today = data[0].positive;
-          var yesterday = data[1].positive;
 
-          var increaseRate = Math.round(((today - yesterday)/yesterday)*100) + "%";
+      var today = data[0].positive;
+      var yesterday = data[1].positive;
 
-          d3.select(posRef.current)
-              .text(today)
-              
-          
-          d3.select(rateRef.current)
-            .text(increaseRate)
+      var increaseRate = Math.round(((today - yesterday) / yesterday) * 100) + "%";
 
-        })
+      d3.select(posRef.current)
+          .text(today)
 
-  },[props.state])
+
+      d3.select(rateRef.current)
+          .text(increaseRate)
+
+    }
+
+  },[data])
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <CardContent>
-        <Grid
-          container
-          justify="space-between"
-        >
-          <Grid item>
-            <Typography
-              className={classes.title}
-              color="textSecondary"
-              gutterBottom
-              variant="body1"
-            >
-              Test Positive
-            </Typography>
-            <Typography 
-              variant="h3"
-              ref={posRef}
+      <Card
+          {...rest}
+          className={clsx(classes.root, className)}
+      >
+        <CardContent>
+          <Grid
+              container
+              justify="space-between"
+          >
+            <Grid item>
+              <Typography
+                  className={classes.title}
+                  color="textSecondary"
+                  gutterBottom
+                  variant="body1"
+              >
+                Test Positive
+              </Typography>
+              <Typography
+                  variant="h3"
+                  ref={posRef}
               >
               </Typography>
+            </Grid>
+            <Grid item>
+              <Avatar className={classes.avatar}>
+                <AddIcon className={classes.icon} />
+              </Avatar>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Avatar className={classes.avatar}>
-              <AddIcon className={classes.icon} />
-            </Avatar>
-          </Grid>
-        </Grid>
-        <div className={classes.difference}>
-          {/* { increaseRate > 0 ?  <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon} />} */}
-          <Typography
-            className={classes.differenceValue}
-            variant="h4"
-            ref={rateRef}
-          ></Typography>
-          <Typography
-            className={classes.caption}
-            variant="caption"
-          >
-            Since yesterday
-          </Typography>
-        </div>
-      </CardContent>
-    </Card>
+          <div className={classes.difference}>
+            {/* { increaseRate > 0 ?  <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon} />} */}
+            <Typography
+                className={classes.differenceValue}
+                variant="h4"
+                ref={rateRef}
+            ></Typography>
+            <Typography
+                className={classes.caption}
+                variant="caption"
+            >
+              Since yesterday
+            </Typography>
+          </div>
+        </CardContent>
+      </Card>
   );
 };
 

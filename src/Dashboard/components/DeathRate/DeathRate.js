@@ -9,7 +9,7 @@ import {
   Grid,
   Typography,
   Avatar,
-  
+
 } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -44,97 +44,89 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DeathRate = props => {
-  const { className, ...rest } = props;
+  const { className, data, ...rest } = props;
 
   const classes = useStyles();
   const deathRef = useRef(null);
   const rateRef = useRef(null);
 
   const [trend, setTrend] = useState('up');
-  
-  const switchURL = () => {
-  if ( props.state == '' ) {
-    return json("https://covidtracking.com/api/us/daily")
-  } else {
-    return json(`https://covidtracking.com/api/states/daily?state=${props.state}`)
-  }
-};
 
   useEffect(() => {
+    if (data !== null) {
+      d3.select(rateRef.current).selectAll('p').text('');
+      console.log("~~~~~~~~~~~~~~~")
 
-    d3.select(rateRef.current).selectAll('p').text('');
-    console.log("~~~~~~~~~~~~~~~")
-    
-    switchURL().then(data=>{
       console.log("covid-19 daily data")
-        console.log(data)
+      console.log(data)
 
       var today = data[0].death;
       var yesterday = data[1].death;
 
-      var deathRate = Math.round(((today - yesterday)/yesterday)*100) + "%";
+      var deathRate = Math.round(((today - yesterday) / yesterday) * 100) + "%";
 
-      if(deathRate <0 ) {
+      if (deathRate < 0) {
         setTrend('down')
       }
 
       d3.select(deathRef.current)
-        .text(today)
+          .text(today)
 
       d3.select(rateRef.current)
-        .text(deathRate)
-    })
-  },[props.state])
+          .text(deathRate)
+    }
+
+  },[data])
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <CardContent>
+      <Card
+          {...rest}
+          className={clsx(classes.root, className)}
+      >
+        <CardContent>
           <Grid
-            container
-            justify="space-between"
+              container
+              justify="space-between"
           >
             <Grid item>
               <Typography
-                className={classes.title}
-                color="textSecondary"
-                gutterBottom
-                variant="body1"
+                  className={classes.title}
+                  color="textSecondary"
+                  gutterBottom
+                  variant="body1"
               >
                 Fatality Rate
               </Typography>
-              <Typography 
-                variant="h3"
-                ref={deathRef}
-                >
+              <Typography
+                  variant="h3"
+                  ref={deathRef}
+              >
               </Typography>
-              </Grid>
-              <Grid item>
-                <Avatar className={classes.avatar}>
-                  <SentimentVeryDissatisfiedOutlinedIcon className={classes.icon} />
-            </Avatar>
+            </Grid>
+            <Grid item>
+              <Avatar className={classes.avatar}>
+                <SentimentVeryDissatisfiedOutlinedIcon className={classes.icon} />
+              </Avatar>
             </Grid>
           </Grid>
 
-         
+
           <div className={classes.difference}>
-              {/* { trend == 'up'?  <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon} />} */}
-          <Typography
-            className={classes.differenceValue}
-            variant="h4"
-            ref={rateRef}
-          ></Typography>
-          <Typography
-            className={classes.caption}
-            variant="caption"
-          >
-            Since yesterday
-          </Typography>
+            {/* { trend == 'up'?  <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon} />} */}
+            <Typography
+                className={classes.differenceValue}
+                variant="h4"
+                ref={rateRef}
+            ></Typography>
+            <Typography
+                className={classes.caption}
+                variant="caption"
+            >
+              Since yesterday
+            </Typography>
           </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
   );
 };
 
