@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import AppsOutlinedIcon from '@material-ui/icons/AppsOutlined';
+import theme from '../../../theme';
+
 import * as d3 from 'd3';
 import { json } from 'd3-fetch';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
     height: '100%',
     backgroundColor: theme.palette.primary.main,
@@ -50,8 +52,9 @@ const Total = props => {
 
       var increaseRate = Math.round(((today - yesterday) / yesterday) * 100) + "%";
 
+      var todayFormatted = today.toLocaleString('en-US');
       d3.select(totalRef.current)
-          .text(today)
+          .text(todayFormatted)
 
       d3.select(rateRef.current)
           .text(increaseRate)

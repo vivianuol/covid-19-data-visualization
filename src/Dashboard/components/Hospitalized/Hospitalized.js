@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import HotelOutlinedIcon from '@material-ui/icons/HotelOutlined';
+import theme from '../../../theme';
+
 import * as d3 from 'd3';
 import { json } from 'd3-fetch';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
     height: '100%'
   },
@@ -49,7 +51,7 @@ const Hospitalized = props => {
   const rateRef = useRef(null);
 
   useEffect(() => {
-    console.log("++++data in hospitalized: " + JSON.stringify(data))
+
     if (data !== null) {
       d3.select(rateRef.current).selectAll('p').text('');
 
@@ -59,8 +61,9 @@ const Hospitalized = props => {
 
       var hosRate = Math.round((hospToday / posToday) * 100) + "%";
 
+      var hospTodayFormatted = hospToday.toLocaleString('en-US');
       d3.select(hospRef.current)
-          .text(hospToday)
+          .text(hospTodayFormatted)
 
       d3.select(rateRef.current)
           .text(hosRate + "(hospitality rate)")

@@ -6,10 +6,12 @@ import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import AddIcon from '@material-ui/icons/Add';
+import theme from '../../../theme';
+
 import * as d3 from 'd3';
 import { json } from 'd3-fetch';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
     height: '100%'
   },
@@ -60,9 +62,10 @@ const TestPositive = props => {
       var yesterday = data[1].positive;
 
       var increaseRate = Math.round(((today - yesterday) / yesterday) * 100) + "%";
-
+      
+      var todayFormatted = today.toLocaleString('en-US');
       d3.select(posRef.current)
-          .text(today)
+          .text(todayFormatted)
 
 
       d3.select(rateRef.current)

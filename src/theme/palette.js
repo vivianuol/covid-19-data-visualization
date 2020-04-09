@@ -2,6 +2,10 @@ import { colors } from '@material-ui/core';
 
 const white = '#FFFFFF';
 const black = '#000000';
+const option1  = '#cae7e7';
+const option2  = '#70867f';
+const option3  = '#d0ad8d';
+
 
 export default {
   black,
@@ -48,8 +52,8 @@ export default {
     link: colors.blue[600]
   },
   background: {
-    default:  colors.blueGrey[600],
-    paper: white
+    default:  option3,
+    paper: white,
   },
   icon: colors.blueGrey[600],
   divider: colors.grey[200]

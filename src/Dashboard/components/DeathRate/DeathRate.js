@@ -13,11 +13,12 @@ import {
 } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import theme from '../../../theme';
 
 import * as d3 from 'd3';
 import { json } from 'd3-fetch';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
     height: '100%'
   },
@@ -69,8 +70,9 @@ const DeathRate = props => {
         setTrend('down')
       }
 
+      var todayFormatted = today.toLocaleString('en-US');
       d3.select(deathRef.current)
-          .text(today)
+          .text(todayFormatted)
 
       d3.select(rateRef.current)
           .text(deathRate)

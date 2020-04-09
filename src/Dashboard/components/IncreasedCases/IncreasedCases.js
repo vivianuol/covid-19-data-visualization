@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import theme from '../../../theme';
 
 import * as d3 from 'd3';
 import { json } from 'd3-fetch';
@@ -61,6 +62,7 @@ const IncreasedCases = props => {
           .style('background', '#f4f4f4')
           .attr("viewBox", "0 0 " + canvas.width + " " + canvas.height)
           .append("g")
+          .style('font-family', '"Open Sans", verdana, arial, sans-serif')
           .attr("transform",
               "translate(" + margin.left + "," + margin.top + ")");
 
@@ -72,12 +74,12 @@ const IncreasedCases = props => {
                 hospitalized: d.hospitalized,
               }
             });
-      filtered.reverse();
+      // filtered.reverse();
 
     // array of all filtered data except Day 1
-    const ruleOutLast = filtered.slice(1,filtered.length)
+    const ruleOutLast = filtered.slice(1,filtered.length-1)
     // array of all filtered data except Day last
-    const ruleOutFirst = filtered.slice(0, filtered.length-1);
+    const ruleOutFirst = filtered.slice(0, filtered.length-2);
 
 
     const wholeIncreased = ruleOutLast.map((d, i) => {
@@ -98,11 +100,11 @@ const IncreasedCases = props => {
 
       //list of groups = value of the first colum called group
       var groups = d3.map(data, function (d) { return d.date }).keys();
-      groups = groups.slice(0, groups.length-1).reverse()
+      groups = groups.slice(0, groups.length-1)
       console.log("*****************")
       console.log(groups)
 
-      var formattedDate = groups.map( date => date.slice(5,6) + "-" + date.slice(6,8));
+      var formattedDate = groups.map( date => date.slice(4,6) + "-" + date.slice(6,8));
 
       //Add X axis
       var xAxisScale = d3.scaleBand()
@@ -130,9 +132,11 @@ const IncreasedCases = props => {
           .domain([maxHeight, 0])
           .range([0, height]);
       var y_axis = d3.axisLeft()
+          .tickSize(-3)
           .scale(yAxisScale);
       svg.append('g')
           .call(y_axis)
+          .style('font-size', '0.6em')
 
 
       //Add r axis for ratios
@@ -141,6 +145,7 @@ const IncreasedCases = props => {
           .domain([100, 0])
           .range([0, height]);
       var r_axis = d3.axisRight()
+          .tickSize(3)
           .scale(rAxisScale);
       svg.append('g')
           .call(r_axis)
@@ -153,6 +158,7 @@ const IncreasedCases = props => {
               "translate(" + (width / 2) + " ," +
               (height + margin.top) + ")")
           .attr("dy", "0.6em")
+          .style('font-size','0.7em')
           .style("text-anchor", "end")
           .text("Date");
 
@@ -170,18 +176,18 @@ const IncreasedCases = props => {
           .attr("dx", "5.5em")
           .attr("dy", "-0.5em")
           .style("text-anchor", "end")
-          .style("font-size", "1em")
+          .style("font-size", "0.7em")
           .text("Cases");
 
       // text label for the r axis
       svg.append("text")
           .attr('transform', `translate(${width}, 0 )`)
-          .attr("x", 0 - margin.left)
+          .attr("x", '-1em')
           .attr("y", 0)
           .attr("dx", "2.5em")
           .attr("dy", "-0.5em")
           .style("text-anchor", "end")
-          .style("font-size", "1em")
+          .style("font-size", "0.6em")
           .text("%");
 
       //scale for subgroup positioning
@@ -209,6 +215,7 @@ const IncreasedCases = props => {
           }) // 100 is where the first dot appears. 25 is the distance between dots
           .attr("width", size)
           .attr("height", size)
+          .style('font-size', '0.6em')
           .style("fill", function (d) {
             return color(d)
           })
@@ -223,6 +230,7 @@ const IncreasedCases = props => {
             return 50 + i * (size + 5) + (size / 2)
           })
           // 100 is where the first dot appears. 25 is the distance between dots
+          .style('font-size', '0.6em')
           .style("fill", function (d) {
             return color(d)
           })
@@ -233,12 +241,12 @@ const IncreasedCases = props => {
           .style("alignment-baseline", "middle")
 
       //add title for the graph
-      svg.append("text")
-          .attr("x", (width / 2))
-          .attr("y", 0 - (margin.top / 2))
-          .attr("text-anchor", "middle")
-          .style("font-size", "16px")
-          .text("Hospitalized Increased Vs Test positive Increased Cases");
+      // svg.append("text")
+      //     .attr("x", (width / 2))
+      //     .attr("y", 0 - (margin.top / 2))
+      //     .attr("text-anchor", "middle")
+      //     .style("font-size", "0.8em")
+      //     .text("Hospitalized Increased Vs Test positive Increased");
 
       //Show the bars
       svg.append('g')
@@ -275,30 +283,23 @@ const IncreasedCases = props => {
           .attr('width', xSubgroupScale.bandwidth())
           .attr('height', d => (height - yAxisScale(d.value)))
           .style('fill', (d, i) => color(i))
-    }
+    
 
-    //  //show the connected scatters for ratio
-    // // Add the line
-    // svg.append("path")
-    //   .datum(wholeIncreased)
-    //   .attr("fill", "none")
-    //   .attr("stroke", "#f26b5b")
-    //   .attr("stroke-width", 1.5)
-    //   .attr("d", d3.line()
-    //     .x(function(d) { return xAxisScale(d.date) })
-    //     .y(function(d) { return rAxisScale(d.ratio) })
-    //     )
-    //  // Add the points
-    //  svg
-    //  .append("g")
-    //  .selectAll("dot")
-    //  .data(wholeIncreased)
-    //  .enter()
-    //  .append("circle")
-    //    .attr("cx", function(d) { return xAxisScale(d.date) } )
-    //    .attr("cy", function(d) { return rAxisScale(d.ratio) } )
-    //    .attr("r", 3)
-    //    .attr("fill", "#f26b5b")
+   //add grid lines for y axis
+   var yGridLine = d3.axisLeft()
+                      .scale(yAxisScale)
+                      .tickSize(-width, 0 ,0)
+                      .tickFormat("");
+
+   svg.append("g")
+      .call(yGridLine)
+      .classed("gridLine", true)
+      .attr("transform", "translate(0,0)")
+      .style('color', 'lightgrey')
+      .style('opacity', '0.7')
+      .style('stroke-width','0.5')
+      
+  }
 
   },[data])
 
@@ -316,7 +317,7 @@ const IncreasedCases = props => {
                 Last 7 days <ArrowDropDownIcon />
               </Button>
             }
-            title="Increased Cases"
+            title="Hospitalized Increased Vs Test Positive Increased"
         />
         <Divider />
         <CardContent>
