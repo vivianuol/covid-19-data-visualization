@@ -7,7 +7,7 @@ import {
   CardHeader,
   Divider,
   Button } from '@material-ui/core';
-import theme from '../src/theme';
+import theme from '../../src/theme';
 // import Graphic from '../public/images/Webp.net-resizeimage-67.png';
 
 import * as d3 from 'd3';
@@ -23,7 +23,7 @@ import {
   AbsoluteCases,
   IncreasedCases,
   SimpleSelect
-} from '../src/Dashboard/components';
+} from '../../src/Dashboard/components';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -40,15 +40,17 @@ const useStyles = makeStyles(() => ({
 
 export default () => {
 
-  const router = useRouter();
-    console.log("router.query.state");
-    console.log(router.query.state);
+    const statesArr = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'PR', 'GU', 'VI', 'all'];
 
-    let stateUS ='';
-    if ( router.query.state !== undefined && router.query.state !== 'United States') {
-        stateUS = router.query.state
+  const router = useRouter();
+    console.log("router.query.id");
+    console.log(router.query.id);
+
+    let stateUS ='all';
+    if ( statesArr.includes(router.query.id)) {
+        stateUS = router.query.id
     } else {
-        stateUS = '';
+        stateUS = 'all';
     }
     
     console.log("stateUS");
@@ -56,18 +58,17 @@ export default () => {
 
 
   const classes = useStyles();
-  // const router = useRouter();
-  // if (!stateUS) stateUS = router.query.stateUS;
   const myHeader1Ref = useRef(null);
 
   const [stateUSData, setStateUSData] = useState(null);
   //const [stateUS, setStateUS] = useState('');
 
   const switchURL = async () => {
-    if (router.query.state === undefined || router.query.state ==='United States') {
-      return await json("https://covidtracking.com/api/us/daily")
+    if (stateUS === router.query.id && stateUS !=='all') {
+      return await json
+      (`https://covidtracking.com/api/states/daily?state=${router.query.id}`)
     } else {
-      return await json(`https://covidtracking.com/api/states/daily?state=${router.query.state}`)
+      return await json("https://covidtracking.com/api/us/daily")
     }
   }
 
@@ -75,20 +76,13 @@ export default () => {
   useEffect(()=> {
 
     d3.select(myHeader1Ref.current).selectAll('p').remove();
-    // d3.select(myHeader1Ref.current)
-    //   .append('div')
-    //   .attr('class', 'title')
-    //   .text('Case Summary')
-    //   .style('color', '#784a62')
-    //   .style('padding','5px')
-
 
     switchURL().then(data => {
         console.log("data");
         console.log(data);
 
-      setStateUSData(data)
-      console.log(data[0].dateChecked)
+    setStateUSData(data)
+    console.log(data[0].dateChecked)
 
       d3.select(myHeader1Ref.current)
             .text('COVID-19 Data Visualization Board')

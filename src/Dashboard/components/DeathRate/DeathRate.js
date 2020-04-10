@@ -97,7 +97,7 @@ const DeathRate = props => {
                   gutterBottom
                   variant="body1"
               >
-                Fatality Rate
+                Mortality
               </Typography>
               <Typography
                   variant="h3"
