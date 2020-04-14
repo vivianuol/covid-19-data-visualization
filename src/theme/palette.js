@@ -2,7 +2,7 @@ import { colors } from '@material-ui/core';
 
 const white = '#FFFFFF';
 const black = '#000000';
-const option1  = '#cae7e7';
+const option1  = '#140f2f';
 const option2  = '#70867f';
 const option3  = '#d0ad8d';
 
@@ -52,7 +52,7 @@ export default {
     link: colors.blue[600]
   },
   background: {
-    default:  option3,
+    default: option1,
     paper: white,
   },
   icon: colors.blueGrey[600],

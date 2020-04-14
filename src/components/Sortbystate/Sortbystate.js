@@ -15,7 +15,7 @@ export default function SimpleSelect( ) {
 
   const [stateCurrent, setStateCurrent] = useState('United States');
 
-  const statesArr = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'PR', 'GU', 'VI', 'all'];
+  const statesArr = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'PR', 'GU', 'VI', 'ALL'];
 
 
   return (
@@ -33,7 +33,7 @@ export default function SimpleSelect( ) {
                 {
                   state == stateCurrent ?
                     <div>{state}</div> :
-                    <Link href={`/dashboard/[id]`} as={`/dashboard/${state}`}>
+                    <Link href={`/[id]`} as={`/${state}`}>
                       <a onClick={() => {
                         // let selection;
                         // (state == 'All') ? selection = 'all' : selection = state;

@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+
+import React, { useRef, useEffect} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
-import HotelOutlinedIcon from '@material-ui/icons/HotelOutlined';
+import AppsOutlinedIcon from '@material-ui/icons/AppsOutlined';
 import theme from '../../../theme';
 
 import * as d3 from 'd3';
@@ -11,7 +12,9 @@ import { json } from 'd3-fetch';
 
 const useStyles = makeStyles(() => ({
   root: {
-    height: '100%'
+    height: '100%',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText
   },
   content: {
     alignItems: 'center',
@@ -21,53 +24,42 @@ const useStyles = makeStyles(() => ({
     fontWeight: 700
   },
   avatar: {
-    backgroundColor: theme.palette.success.main,
+    backgroundColor: theme.palette.white,
+    color: theme.palette.primary.main,
     height: 56,
     width: 56
   },
   icon: {
     height: 32,
     width: 32
-  },
-  difference: {
-    marginTop: theme.spacing(2),
-    display: 'flex',
-    alignItems: 'center'
-  },
-  differenceIcon: {
-    color: theme.palette.success.dark
-  },
-  differenceValue: {
-    color: theme.palette.success.dark,
-    marginRight: theme.spacing(1)
   }
 }));
 
-const Hospitalized = props => {
+const Total = props => {
   const { className, data, ...rest } = props;
 
   const classes = useStyles();
-  const hospRef = useRef(null);
+  const totalRef = useRef(null);
   const rateRef = useRef(null);
 
-  useEffect(() => {
 
-    if (data !== null) {
+  useEffect(() => {
+    if (data) {
       d3.select(rateRef.current).selectAll('p').text('');
 
+      var today = data[0].total;
+      var yesterday = data[1].total;
 
-      var hospToday = data[0].hospitalized == null ? 0 : data[0].hospitalized;
-      var posToday = data[0].positive == null ? 1 : data[0].positive;
+      var increaseRate = Math.round(((today - yesterday) / yesterday) * 100) + "%";
 
-      var hosRate = Math.round((hospToday / posToday) * 100) + "%";
-
-      var hospTodayFormatted = hospToday.toLocaleString('en-US');
-      d3.select(hospRef.current)
-          .text(hospTodayFormatted)
+      var todayFormatted = today.toLocaleString('en-US');
+      d3.select(totalRef.current)
+          .text(todayFormatted)
 
       d3.select(rateRef.current)
-          .text(hosRate + "(hospitality rate)")
+          .text(increaseRate)
     }
+
   },[data])
 
   return (
@@ -83,20 +75,22 @@ const Hospitalized = props => {
             <Grid item>
               <Typography
                   className={classes.title}
-                  color="textSecondary"
+                  color="inherit"
                   gutterBottom
                   variant="body1"
               >
-                Hospitalized
+                TOTAL TESTED
               </Typography>
               <Typography
+                  color="inherit"
                   variant="h3"
-                  ref= {hospRef}>
+                  ref= {totalRef}
+              >
               </Typography>
             </Grid>
             <Grid item>
               <Avatar className={classes.avatar}>
-                <HotelOutlinedIcon className={classes.icon} />
+                <AppsOutlinedIcon className={classes.icon} />
               </Avatar>
             </Grid>
           </Grid>
@@ -105,8 +99,7 @@ const Hospitalized = props => {
                 className={classes.differenceValue}
                 variant="h4"
                 ref={rateRef}
-            >
-            </Typography>
+            ></Typography>
             <Typography
                 className={classes.caption}
                 variant="caption"
@@ -119,8 +112,8 @@ const Hospitalized = props => {
   );
 };
 
-Hospitalized.propTypes = {
+Total.propTypes = {
   className: PropTypes.string
 };
 
-export default Hospitalized;
+export default Total;

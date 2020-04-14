@@ -40,8 +40,8 @@ var canvas = {
   height: 360
 }
 
-var width = 640 - margin.left - margin.right;
-var height = 360 - margin.top - margin.bottom;
+var width = canvas.width - margin.left - margin.right;
+var height = canvas.height - margin.top - margin.bottom;
 
 
 const IncreasedCases = props => {
@@ -52,9 +52,8 @@ const IncreasedCases = props => {
 
 
   useEffect(() => {
-    if (data !== null) {
+    if (data) {
 
-      console.log("++++data increased case: " + JSON.stringify(data));
       d3.select(incRef.current).selectAll('svg').remove();
 
       const svg = d3.select(incRef.current)
@@ -89,8 +88,8 @@ const IncreasedCases = props => {
         hospitalized: d.hospitalized - ruleOutFirst[i].hospitalized
       }
     })
-    console.log("the difference")
-    console.log(wholeIncreased)
+    // console.log("the difference")
+    // console.log(wholeIncreased)
 
 
       //list of subgroups
@@ -101,8 +100,7 @@ const IncreasedCases = props => {
       //list of groups = value of the first colum called group
       var groups = d3.map(data, function (d) { return d.date }).keys();
       groups = groups.slice(0, groups.length-1)
-      console.log("*****************")
-      console.log(groups)
+  
 
       var formattedDate = groups.map( date => date.slice(4,6) + "-" + date.slice(6,8));
 

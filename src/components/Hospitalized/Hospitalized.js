@@ -1,18 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import SentimentVeryDissatisfiedOutlinedIcon from '@material-ui/icons/SentimentVeryDissatisfiedOutlined';
-import {
-  Card,
-  CardContent,
-  Grid,
-  Typography,
-  Avatar,
-
-} from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
+import HotelOutlinedIcon from '@material-ui/icons/HotelOutlined';
 import theme from '../../../theme';
 
 import * as d3 from 'd3';
@@ -30,8 +21,7 @@ const useStyles = makeStyles(() => ({
     fontWeight: 700
   },
   avatar: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.success.main,
     height: 56,
     width: 56
   },
@@ -39,45 +29,45 @@ const useStyles = makeStyles(() => ({
     height: 32,
     width: 32
   },
-  progress: {
-    marginTop: theme.spacing(3)
+  difference: {
+    marginTop: theme.spacing(2),
+    display: 'flex',
+    alignItems: 'center'
+  },
+  differenceIcon: {
+    color: theme.palette.success.dark
+  },
+  differenceValue: {
+    color: theme.palette.success.dark,
+    marginRight: theme.spacing(1)
   }
 }));
 
-const DeathRate = props => {
+const Hospitalized = props => {
   const { className, data, ...rest } = props;
 
   const classes = useStyles();
-  const deathRef = useRef(null);
+  const hospRef = useRef(null);
   const rateRef = useRef(null);
 
-  const [trend, setTrend] = useState('up');
-
   useEffect(() => {
-    if (data !== null) {
+
+    if (data) {
       d3.select(rateRef.current).selectAll('p').text('');
-      console.log("~~~~~~~~~~~~~~~")
 
-      console.log("covid-19 daily data")
-      console.log(data)
 
-      var today = data[0].death;
-      var yesterday = data[1].death;
+      var hospToday = data[0].hospitalized == null ? 0 : data[0].hospitalized;
+      var posToday = data[0].positive == null ? 1 : data[0].positive;
 
-      var deathRate = Math.round(((today - yesterday) / yesterday) * 100) + "%";
+      var hosRate = Math.round((hospToday / posToday) * 100) + "%";
 
-      if (deathRate < 0) {
-        setTrend('down')
-      }
-
-      var todayFormatted = today.toLocaleString('en-US');
-      d3.select(deathRef.current)
-          .text(todayFormatted)
+      var hospTodayFormatted = hospToday.toLocaleString('en-US');
+      d3.select(hospRef.current)
+          .text(hospTodayFormatted)
 
       d3.select(rateRef.current)
-          .text(deathRate)
+          .text(hosRate)
     }
-
   },[data])
 
   return (
@@ -97,29 +87,26 @@ const DeathRate = props => {
                   gutterBottom
                   variant="body1"
               >
-                Mortality
+                Hospitalized
               </Typography>
               <Typography
                   variant="h3"
-                  ref={deathRef}
-              >
+                  ref= {hospRef}>
               </Typography>
             </Grid>
             <Grid item>
               <Avatar className={classes.avatar}>
-                <SentimentVeryDissatisfiedOutlinedIcon className={classes.icon} />
+                <HotelOutlinedIcon className={classes.icon} />
               </Avatar>
             </Grid>
           </Grid>
-
-
           <div className={classes.difference}>
-            {/* { trend == 'up'?  <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon} />} */}
             <Typography
                 className={classes.differenceValue}
                 variant="h4"
                 ref={rateRef}
-            ></Typography>
+            >
+            </Typography>
             <Typography
                 className={classes.caption}
                 variant="caption"
@@ -132,8 +119,8 @@ const DeathRate = props => {
   );
 };
 
-DeathRate.propTypes = {
+Hospitalized.propTypes = {
   className: PropTypes.string
 };
 
-export default DeathRate;
+export default Hospitalized;

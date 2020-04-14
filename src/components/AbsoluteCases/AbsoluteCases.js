@@ -46,21 +46,17 @@ var height = 360 - margin.top - margin.bottom;
 export default (props) => {
 
   const { className, data, ...rest } = props;
-  console.log("props");
-  console.log(props);
+  // console.log("props");
+  // console.log(props);
 
   const classes = useStyles();
   const absRef = useRef(null);
 
 
   useEffect(() => {
-    if (data !== null) {
+    if (data) {
       d3.select(absRef.current).selectAll('svg').remove();
 
-      console.log("$%^&**&^%$#")
-      console.log(data)
-      console.log("absRef.current")
-      console.log(absRef.current)
 
       const svg = d3.select(absRef.current)
         .append("svg")
@@ -84,8 +80,8 @@ export default (props) => {
         }
       });
       filtered.reverse();
-      console.log("**************")
-      console.log(filtered)
+      // console.log("**************")
+      // console.log(filtered)
 
       //list of groups = value of the first colum called group
       var groups = d3.map(data, function (d) {

@@ -9,7 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 import theme from '../../../theme';
 
 import * as d3 from 'd3';
-import { json } from 'd3-fetch';
+import CountUp from 'react-countup';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -54,7 +54,7 @@ const TestPositive = props => {
 
 
   useEffect(()=> {
-    if (data !== null) {
+    if (data) {
       d3.select(rateRef.current).selectAll('p').text('');
 
 
