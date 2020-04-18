@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import AppsOutlinedIcon from '@material-ui/icons/AppsOutlined';
-import theme from '../../../theme';
+import theme from '../../theme';
 
 import * as d3 from 'd3';
 import { json } from 'd3-fetch';
@@ -47,8 +47,8 @@ const Total = props => {
     if (data) {
       d3.select(rateRef.current).selectAll('p').text('');
 
-      var today = data[0].total;
-      var yesterday = data[1].total;
+      var today = data[0].totalTestResults;
+      var yesterday = data[1].totalTestResults;
 
       var increaseRate = Math.round(((today - yesterday) / yesterday) * 100) + "%";
 

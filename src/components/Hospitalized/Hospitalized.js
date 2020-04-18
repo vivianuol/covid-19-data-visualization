@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import HotelOutlinedIcon from '@material-ui/icons/HotelOutlined';
-import theme from '../../../theme';
+import theme from '../../theme';
 
 import * as d3 from 'd3';
 import { json } from 'd3-fetch';

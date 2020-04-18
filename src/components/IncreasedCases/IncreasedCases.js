@@ -10,12 +10,9 @@ import {
   Divider,
   Button
 } from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import theme from '../../../theme';
 
 import * as d3 from 'd3';
-import { json } from 'd3-fetch';
+
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -73,7 +70,7 @@ const IncreasedCases = props => {
                 hospitalized: d.hospitalized,
               }
             });
-      // filtered.reverse();
+      //filtered.reverse();
 
     // array of all filtered data except Day 1
     const ruleOutLast = filtered.slice(1,filtered.length-1)
@@ -307,14 +304,14 @@ const IncreasedCases = props => {
           className={clsx(classes.root, className)}
       >
         <CardHeader
-            action={
-              <Button
-                  size="small"
-                  variant="text"
-              >
-                Last 7 days <ArrowDropDownIcon />
-              </Button>
-            }
+            // action={
+            //   <Button
+            //       size="small"
+            //       variant="text"
+            //   >
+            //     Last 7 days <ArrowDropDownIcon />
+            //   </Button>
+            // }
             title="Hospitalized Increased Vs Test Positive Increased"
         />
         <Divider />
@@ -331,7 +328,7 @@ const IncreasedCases = props => {
               size="small"
               variant="text"
           >
-            Overview <ArrowRightIcon />
+            Overview 
           </Button>
         </CardActions>
       </Card>

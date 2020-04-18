@@ -1,1 +1,1 @@
-export { default } from './AbsoluteCases';
+export { default } from './PositiveTotalCases';

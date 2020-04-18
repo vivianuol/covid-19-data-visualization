@@ -55,7 +55,7 @@ const Page = ({params}) => {
     if ( params ) { queryID = params}
     if (router.query.id ) {
         queryID = (router.query.id).toUpperCase();
-        console.log(queryID);
+        
     }
 
 
@@ -70,45 +70,56 @@ const Page = ({params}) => {
     const myHeader1Ref = useRef(null);
 
     const [stateUSData, setStateUSData] = useState(null);
+    const [circularData, setCircularData] = useState(null);
     const [rechartData, setRechartData] = useState(null);
 
 
     const switchURL = async () => {
         if (stateUS === queryID && stateUS !== 'ALL') {
-            console.log('the state ' + stateUS)
+            
             return await json(`https://covidtracking.com/api/states/daily?state=${stateUS}`)
         } else if (stateUS === 'ALL'){
-            console.log('unite states '+ stateUS + ' ' + queryID);
+            
             return await json("https://covidtracking.com/api/us/daily")
         }
     }
 
+    
 
     useEffect(() => {
-        
-        console.log("++++fetching data " + stateUS);
+    
        if (stateUS) {
+
         d3.select(myHeader1Ref.current).selectAll('p').remove();
 
         switchURL().then(data => {
+            
+            setStateUSData(data);
 
-            setStateUSData(data)
+            var p = [...data];
+            setRechartData(p.reverse());
+
+            console.log('-----data-----  ' + JSON.stringify(p));
+            console.log('++++++data++++++  ' + JSON.stringify(data));
 
             d3.select(myHeader1Ref.current)
                 .text('COVID-19 Data Visualization Board')
+                .style('font-size', '32px')
                 .style('font-weight', 'bold')
                 .style('font-family', '"Open Sans", verdana, arial, sans-serif')
                 .append('p')
                 .text(`updated at: ${data[0].dateChecked}`)
                 .style('font-size', '12px')
                 .style('padding', '8px')
-
+                .append('p')
+                .text('source: covidtracking.com')
+                
         })
 
+
         json('https://covidtracking.com/api/v1/states/current.json').then(data => {
-            // console.log('###$$$$####'); 
-            // console.log(data); 
-            setRechartData(data);
+            
+            setCircularData(data);
         })
        } else {
            Router.replace("/[id]", "/all", { shallow: true });
@@ -119,20 +130,18 @@ const Page = ({params}) => {
 
 
     return (
-        <div className={classes.root}>
-            <Grid className={classes.section} container spacing={2}>
+        <div>
+            <Grid container spacing={2}>
 
                 <Grid item xs={12}>
-                    <Typography className={classes.paper}
-                        color="textPrimary"
-                        variant="h3"
+                    <Typography                         color="textPrimary"
                         ref={myHeader1Ref}
                     >
                     </Typography>
                 </Grid>
 
                 <Grid item xs={12}>
-                    <Card className={classes.paper}>
+                    <Card>
                         <SimpleSelect />
                     </Card>
                 </Grid>
@@ -183,7 +192,7 @@ const Page = ({params}) => {
                         sm={6}
                         xs={12}
                     >
-                        <TodayIncreased data={rechartData} />
+                        <TodayIncreased data={circularData} />
                     </Grid> : <p></p>
                 }
                 {stateUS === 'ALL' ?
@@ -192,7 +201,7 @@ const Page = ({params}) => {
                         sm={6}
                         xs={12}
                     >
-                        <RecordList data={rechartData} />
+                        <RecordList data={circularData} />
                     </Grid> : <p></p>
                 }
                 {stateUS === 'ALL' ?
@@ -200,25 +209,29 @@ const Page = ({params}) => {
                         lg={3}
                         sm={6}
                         xs={12}>
-                        <TodayDeath data={rechartData} />
+                        <TodayDeath data={circularData} />
                     </Grid> : <p></p>
                 }
-
+                { rechartData ?
                 <Grid
                     item
                     lg={6}
                     xs={12}
                 >
-                    <AbsoluteCases data={stateUSData} />
-                </Grid>
+                    <AbsoluteCases data={rechartData} />
+                </Grid> : <p>loading</p>
+                }
 
+                { rechartData ?
                 <Grid
                     item
                     lg={6}
                     xs={12}
                 >
-                    <IncreasedCases data={stateUSData} />
-                </Grid>
+                    <IncreasedCases data={rechartData} />
+                </Grid> : <p>loading</p>
+                }
+                
             </Grid>
         </div>
     );

@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import theme from '../../../theme';
+import theme from '../../theme';
 
 import * as d3 from 'd3';
 import { json } from 'd3-fetch';
@@ -318,14 +318,14 @@ export default (props) => {
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        action={
-          <Button
-            size="small"
-            variant="text"
-          >
-            Last 7 days <ArrowDropDownIcon />
-          </Button>
-        }
+        // action={
+        //   <Button
+        //     size="small"
+        //     variant="text"
+        //   >
+        //     Last 7 days <ArrowDropDownIcon />
+        //   </Button>
+        // }
         title="Total Tested Vs Test Positive"
       />
       <Divider />
@@ -342,7 +342,7 @@ export default (props) => {
           size="small"
           variant="text"
         >
-          Overview <ArrowRightIcon />
+          Overview 
         </Button>
       </CardActions>
     </Card>

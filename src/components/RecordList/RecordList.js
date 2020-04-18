@@ -37,7 +37,6 @@ export default function RecordList({ data }) {
     };
 
     useEffect(() => {
-        console.log('%%%%%%%%%%%%' + JSON.stringify(data));
         if (data) {
             setSrc(data)
         }

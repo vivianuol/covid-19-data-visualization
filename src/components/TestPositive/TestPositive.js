@@ -6,7 +6,7 @@ import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import AddIcon from '@material-ui/icons/Add';
-import theme from '../../../theme';
+import theme from '../../theme';
 
 import * as d3 from 'd3';
 import CountUp from 'react-countup';

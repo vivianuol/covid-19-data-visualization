@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import theme from '../../../theme';
+import theme from '../../theme';
 
 import * as d3 from 'd3';
 import { json } from 'd3-fetch';
