@@ -48,9 +48,11 @@ const Page = ({params}) => {
     const statesArr = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'PR', 'GU', 'VI', 'ALL'];
 
 
+    
 
     const router = useRouter();
-
+    
+    console.log('query.id:' + router.query.id)
     var queryID;
     if ( params ) { queryID = params}
     if (router.query.id ) {
@@ -77,10 +79,10 @@ const Page = ({params}) => {
     const switchURL = async () => {
         if (stateUS === queryID && stateUS !== 'ALL') {
             
-            return await json(`https://covidtracking.com/api/states/daily?state=${stateUS}`)
+            return await json(`https://api.covidtracking.com/v1/states/${state}/daily.json`)
         } else if (stateUS === 'ALL'){
             
-            return await json("https://covidtracking.com/api/us/daily")
+            return await json("https://api.covidtracking.com/v1/us/daily.json")
         }
     }
 
@@ -117,7 +119,7 @@ const Page = ({params}) => {
         })
 
 
-        json('https://covidtracking.com/api/v1/states/current.json').then(data => {
+        json('https://api.covidtracking.com/v1/us/current.json').then(data => {
             
             setCircularData(data);
         })
@@ -134,7 +136,8 @@ const Page = ({params}) => {
             <Grid container spacing={2}>
 
                 <Grid item xs={12}>
-                    <Typography                         color="textPrimary"
+                    <Typography 
+                        color="textPrimary"
                         ref={myHeader1Ref}
                     >
                     </Typography>
