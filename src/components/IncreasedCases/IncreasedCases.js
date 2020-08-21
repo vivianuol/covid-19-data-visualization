@@ -27,14 +27,14 @@ const useStyles = makeStyles(() => ({
 
 var margin = {
   top: 30,
-  right: 30,
-  bottom: 50,
-  left: 50
+  right: 40,
+  bottom: 60,
+  left: 60
 }
 
 var canvas = {
-  width: 640,
-  height: 360
+  width: 500,
+  height: 220
 }
 
 var width = canvas.width - margin.left - margin.right;
@@ -49,6 +49,7 @@ const IncreasedCases = props => {
 
 
   useEffect(() => {
+
     if (data) {
 
       d3.select(incRef.current).selectAll('svg').remove();
@@ -63,7 +64,16 @@ const IncreasedCases = props => {
               "translate(" + margin.left + "," + margin.top + ")");
 
     // the array is listed from last day to first day, we should reverse the order.
-    const filtered = data.map(d=> {
+
+    //data.splice(0, 50);
+    const sectData = data.filter( d => d.positive > 50 );
+    console.log({ splicedData2: sectData });
+
+    let intervalData = [];
+    for(var i = 0; i < sectData.length; i += 5) {  // take every fifth element
+      intervalData.push(sectData[i]);
+  }
+    const filtered = intervalData.map(d=> {
       return {
                 date: d.date,
                 positive: d.positive,
@@ -95,7 +105,7 @@ const IncreasedCases = props => {
 
 
       //list of groups = value of the first colum called group
-      var groups = d3.map(data, function (d) { return d.date }).keys();
+      var groups = d3.map(intervalData, function (d) { return d.date }).keys();
       groups = groups.slice(0, groups.length-1)
   
 

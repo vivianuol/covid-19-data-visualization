@@ -22,10 +22,8 @@ import {
 
 const PositiveTotalCases = ({data}) => {
 
-  // console.log("props");
-  console.log("########");
-  console.log(data);
-
+  const filteredData = data.filter( d => d.positive > 10);
+  console.log({splicedData1: filteredData})
 
   return (
           <Card>
@@ -35,8 +33,8 @@ const PositiveTotalCases = ({data}) => {
             <Divider />
             <CardContent>
               { data ? 
-              <ComposedChart width={660} height={360} data={data}
-              margin={{top: 30, right: 10, left: 10, bottom: 20}}>
+              <ComposedChart width={860} height={400} data={filteredData}
+              margin={{top: 30, right: 20, left: 50, bottom: 20}}>
                 <CartesianGrid vertical={false} strokeDasharray="4 4"/>
                 <XAxis dataKey="date">
                   <Label value="Date" offset={-30} position="insideBottom" />

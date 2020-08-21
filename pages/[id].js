@@ -19,12 +19,12 @@ import {
     Hospitalized,
     DeathRate,
     Total,
-    AbsoluteCases,
     IncreasedCases,
     SimpleSelect,
     TodayIncreased,
     TodayDeath,
-    RecordList
+    RecordList,
+    PositiveTotalCases
 } from '../src/components';
 
 const useStyles = makeStyles(() => ({
@@ -46,8 +46,6 @@ const useStyles = makeStyles(() => ({
 const Page = ({params}) => {
 
     const statesArr = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'PR', 'GU', 'VI', 'ALL'];
-
-
     
 
     const router = useRouter();
@@ -78,10 +76,8 @@ const Page = ({params}) => {
 
     const switchURL = async () => {
         if (stateUS === queryID && stateUS !== 'ALL') {
-            
-            return await json(`https://api.covidtracking.com/v1/states/${state}/daily.json`)
+            return await json(`https://api.covidtracking.com/v1/states/${stateUS}/daily.json`)
         } else if (stateUS === 'ALL'){
-            
             return await json("https://api.covidtracking.com/v1/us/daily.json")
         }
     }
@@ -99,7 +95,7 @@ const Page = ({params}) => {
             setStateUSData(data);
 
             var p = [...data];
-            setRechartData(p.reverse());
+            setRechartData(p.reverse());  
 
             console.log('-----data-----  ' + JSON.stringify(p));
             console.log('++++++data++++++  ' + JSON.stringify(data));
@@ -221,7 +217,7 @@ const Page = ({params}) => {
                     lg={6}
                     xs={12}
                 >
-                    <AbsoluteCases data={rechartData} />
+                    <PositiveTotalCases data={rechartData} />
                 </Grid> : <p>loading</p>
                 }
 

@@ -54,15 +54,15 @@ export default function RecordList({ data }) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {src.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item) => {
+                        {src.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, i) => {
                             return (
-                                <TableRow key={item.state}>
-                                <TableCell component="th" scope="row">
-                                  {item.state}
-                                </TableCell>
-                                <TableCell align="right">{item.positive}</TableCell>
-                                <TableCell align="right">{item.death}</TableCell>
-                              </TableRow>
+                                <TableRow key={i}>
+                                    <TableCell component="th" scope="row">
+                                        {item.state}
+                                    </TableCell>
+                                    <TableCell align="right">{item.positive}</TableCell>
+                                    <TableCell align="right">{item.death}</TableCell>
+                                </TableRow>
                             );
                         })}
                     </TableBody>
@@ -80,26 +80,3 @@ export default function RecordList({ data }) {
         </Paper>
     );
 }
-
-/*      <TableContainer component={Paper}>
- <Table className={classes.table} stickyHeader size="small" aria-label="sticky table">
-<TableHead>
-  <TableRow>
-    <TableCell>State</TableCell>
-    <TableCell align="right">Test positive(cases)</TableCell>
-    <TableCell align="right">Motality(cases)</TableCell>
-  </TableRow>
-</TableHead>
-<TableBody>
-  {src.map((item) => (
-    <TableRow key={item.state}>
-      <TableCell component="th" scope="row">
-        {item.state}
-      </TableCell>
-      <TableCell align="right">{item.positive}</TableCell>
-      <TableCell align="right">{item.death}</TableCell>
-    </TableRow>
-  ))}
-</TableBody>
-</Table>
-</TableContainer> */
