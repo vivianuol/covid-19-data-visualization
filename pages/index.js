@@ -1,9 +1,11 @@
 import React from 'react';
 import Page from './[id]';
 
-export default () => {
+const Index = () => {
 
   return (
     <Page params='all' />
   )
 }
+
+export default Index;
