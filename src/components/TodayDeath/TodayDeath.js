@@ -20,7 +20,7 @@ var canvas = {
 };
 var width = 460 - margin.left - margin.right;
 var height = 460 - margin.top - margin.bottom;
-var innerRadius = 90;
+var innerRadius = 40;
 var outerRadius = Math.min(width, height) / 2;
 
 

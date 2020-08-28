@@ -55,8 +55,6 @@ export default (props) => {
 
   useEffect(() => {
 
-    console.log("&&&&&&&&&&&");
-    
     if (data) {
       d3.select(absRef.current).selectAll('svg').remove();
 

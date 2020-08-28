@@ -21,9 +21,9 @@ import {
     Total,
     IncreasedCases,
     SimpleSelect,
-    TodayIncreased,
-    TodayDeath,
-    RecordList,
+    MostTestPositive,
+    Composition,
+    TodaysDeath,
     PositiveTotalCases
 } from '../src/components';
 
@@ -43,19 +43,19 @@ const useStyles = makeStyles(() => ({
 
 
 
-const Page = ({params}) => {
+const Page = ({ params }) => {
 
     const statesArr = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'PR', 'GU', 'VI', 'ALL'];
-    
+
 
     const router = useRouter();
-    
-    console.log('query.id:' + router.query.id)
+
+    //console.log('query.id:' + router.query.id)
     var queryID;
-    if ( params ) { queryID = params}
-    if (router.query.id ) {
+    if (params) { queryID = params }
+    if (router.query.id) {
         queryID = (router.query.id).toUpperCase();
-        
+
     }
 
 
@@ -70,69 +70,65 @@ const Page = ({params}) => {
     const myHeader1Ref = useRef(null);
 
     const [stateUSData, setStateUSData] = useState(null);
-    const [circularData, setCircularData] = useState(null);
+    const [pieChartData, setPieChartData] = useState(null);
     const [rechartData, setRechartData] = useState(null);
 
 
     const switchURL = async () => {
         if (stateUS === queryID && stateUS !== 'ALL') {
             return await json(`https://api.covidtracking.com/v1/states/${stateUS}/daily.json`)
-        } else if (stateUS === 'ALL'){
+        } else if (stateUS === 'ALL') {
             return await json("https://api.covidtracking.com/v1/us/daily.json")
         }
     }
 
-    
+
 
     useEffect(() => {
-    
-       if (stateUS) {
 
-        d3.select(myHeader1Ref.current).selectAll('p').remove();
+        if (stateUS) {
 
-        switchURL().then(data => {
-            
-            setStateUSData(data);
+            d3.select(myHeader1Ref.current).selectAll('p').remove();
 
-            var p = [...data];
-            setRechartData(p.reverse());  
+            Promise.all([
+                switchURL(),
+                json('https://api.covidtracking.com/v1/states/current.json')
+            ]).then(([forBarChartsData, forPieChartData]) => {
 
-            console.log('-----data-----  ' + JSON.stringify(p));
-            console.log('++++++data++++++  ' + JSON.stringify(data));
+                setPieChartData(forPieChartData);
+                //console.log({"pieChartData" : forPieChartData });
 
-            d3.select(myHeader1Ref.current)
-                .text('COVID-19 Data Visualization Board')
-                .style('font-size', '32px')
-                .style('font-weight', 'bold')
-                .style('font-family', '"Open Sans", verdana, arial, sans-serif')
-                .append('p')
-                .text(`updated at: ${data[0].dateChecked}`)
-                .style('font-size', '12px')
-                .style('padding', '8px')
-                .append('p')
-                .text('source: covidtracking.com')
-                
-        })
+                setStateUSData(forBarChartsData);
 
+                var p = [...forBarChartsData];
+                setRechartData(p.reverse());
 
-        json('https://api.covidtracking.com/v1/us/current.json').then(data => {
-            
-            setCircularData(data);
-        })
-       } else {
-           Router.replace("/[id]", "/all", { shallow: true });
-       }
+                d3.select(myHeader1Ref.current)
+                    .text('COVID-19 Data Visualization Board')
+                    .style('font-size', '32px')
+                    .style('font-weight', 'bold')
+                    .style('font-family', '"Open Sans", verdana, arial, sans-serif')
+                    .append('p')
+                    .text(`updated at: ${forBarChartsData[0].dateChecked}`)
+                    .style('font-size', '12px')
+                    .style('padding', '8px')
+                    .append('p')
+                    .text('source: covidtracking.com')
+
+            })
+
+        } else {
+            Router.replace("/[id]", "/all", { shallow: true });
+        }
 
     }, [stateUS])
-
-
 
     return (
         <div>
             <Grid container spacing={2}>
 
                 <Grid item xs={12}>
-                    <Typography 
+                    <Typography
                         color="textPrimary"
                         ref={myHeader1Ref}
                     >
@@ -187,50 +183,43 @@ const Page = ({params}) => {
 
                 {stateUS === 'ALL' ?
                     <Grid item
-                        lg={3}
-                        sm={6}
+                        lg={4}
+                        sm={12}
                         xs={12}
                     >
-                        <TodayIncreased data={circularData} />
+                        <MostTestPositive rawData={pieChartData} />
                     </Grid> : <p></p>
                 }
                 {stateUS === 'ALL' ?
                     <Grid item
-                        lg={6}
-                        sm={6}
+                        lg={7}
+                        sm={12}
                         xs={12}
                     >
-                        <RecordList data={circularData} />
+                        <Composition rawData={pieChartData} />
                     </Grid> : <p></p>
-                }
-                {stateUS === 'ALL' ?
-                    <Grid item
-                        lg={3}
-                        sm={6}
-                        xs={12}>
-                        <TodayDeath data={circularData} />
-                    </Grid> : <p></p>
-                }
-                { rechartData ?
-                <Grid
-                    item
-                    lg={6}
-                    xs={12}
-                >
-                    <PositiveTotalCases data={rechartData} />
-                </Grid> : <p>loading</p>
                 }
 
-                { rechartData ?
-                <Grid
-                    item
-                    lg={6}
-                    xs={12}
-                >
-                    <IncreasedCases data={rechartData} />
-                </Grid> : <p>loading</p>
+                {rechartData ?
+                    <Grid
+                        item
+                        lg={6}
+                        xs={12}
+                    >
+                        <PositiveTotalCases data={rechartData} />
+                    </Grid> : <p>loading</p>
                 }
-                
+
+                {rechartData ?
+                    <Grid
+                        item
+                        lg={6}
+                        xs={12}
+                    >
+                        <IncreasedCases data={rechartData} />
+                    </Grid> : <p>loading</p>
+                }
+
             </Grid>
         </div>
     );

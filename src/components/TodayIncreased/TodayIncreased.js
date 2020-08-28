@@ -98,7 +98,7 @@ const TodayIncreased = ( props ) => {
           {...rest}
         >
         <CardHeader
-            title="current test positive cases comparison by states"
+            title="today increased cases comparison by states"
         />
         <Divider />
         <CardContent>

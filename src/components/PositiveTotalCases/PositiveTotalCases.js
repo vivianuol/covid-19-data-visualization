@@ -23,7 +23,7 @@ import {
 const PositiveTotalCases = ({data}) => {
 
   const filteredData = data.filter( d => d.positive > 10);
-  console.log({splicedData1: filteredData})
+
 
   return (
           <Card>

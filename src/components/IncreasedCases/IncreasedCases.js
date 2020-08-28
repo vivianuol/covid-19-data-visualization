@@ -67,7 +67,7 @@ const IncreasedCases = props => {
 
     //data.splice(0, 50);
     const sectData = data.filter( d => d.positive > 50 );
-    console.log({ splicedData2: sectData });
+    //console.log({ splicedData2: sectData });
 
     let intervalData = [];
     for(var i = 0; i < sectData.length; i += 5) {  // take every fifth element
