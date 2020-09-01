@@ -42,7 +42,7 @@ const Composition = ({ rawData }) => {
             {formattedData ?
                 <Card>
                     <CardHeader
-                        title="Composition of current infected person by states"
+                        title="Composition of current infected groups by states"
                     />
                     <Divider />
                     <CardContent>

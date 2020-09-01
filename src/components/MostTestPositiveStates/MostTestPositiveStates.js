@@ -54,37 +54,39 @@ const renderLabel = (entry) => {
 
 const MostTestPositiveStates = ({ rawData }) => {
 
+    let mainSectors = null;
     //console.log("rawData   " + rawData);
+    if ( rawData ) {
+        const totalPositive = rawData.reduce((a, b) => a + b.positive, 0);
 
-        const totalPositive =rawData && rawData.reduce((a, b) => a + b.positive, 0);
-
-        const formattedData = rawData && rawData.map(datum => ({
+        const formattedData = rawData.map(datum => ({
             name: datum.state,
             value: datum.positive,
             ratio: ((datum.positive / totalPositive) * 100).toFixed(0) + "%"
         })
         )
 
-        const sortedData = formattedData && formattedData.sort((ac, cur) => { return cur.value - ac.value });
+        const sortedData = formattedData.sort((ac, cur) => { return cur.value - ac.value });
 
 
         //console.log("sortedData: " + JSON.stringify(sortedData));
 
-        let mainSectors = sortedData && sortedData.slice(0, 11);
-        let restSectors = sortedData && sortedData.slice(11, sortedData.length - 11);
+        mainSectors = sortedData.slice(0, 11);
+        let restSectors = sortedData.slice(11, sortedData.length - 11);
 
         //console.log("mainSectors: " + JSON.stringify(mainSectors));
         //console.log("restSectors: " + JSON.stringify(restSectors));
 
-        const restPositive = restSectors && restSectors.reduce((ac, cur) => ac + cur.value, 0)
+        const restPositive = restSectors.reduce((ac, cur) => ac + cur.value, 0)
         //console.log("restPositive: " + restPositive);
 
-        mainSectors && mainSectors.splice(mainSectors.length, 0, {
+        mainSectors.splice(mainSectors.length, 0, {
             name: "OTHERS",
             value: restPositive,
             ratio: (restPositive / totalPositive * 100).toFixed(0) + "%"
         })
         console.log("mainSectors after: " + JSON.stringify(mainSectors));
+    }
 
 return (
     <>

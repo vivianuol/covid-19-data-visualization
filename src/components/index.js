@@ -9,4 +9,5 @@ export { default as MostTestPositive } from './MostTestPositiveStates';
 export { default as Composition } from './CompositionOfInfected';
 export { default as RecordList } from './RecordList';
 export { default as TodaysDeath } from './TodayDeath';
+export { default as ChoroplethMap } from './ChoroplethMap';
 

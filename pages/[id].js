@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import {
     Grid,
+    Container,
     Typography,
-    Card,
 } from '@material-ui/core';
 import theme from '../src/theme';
 // import Graphic from '../public/images/Webp.net-resizeimage-67.png';
@@ -23,7 +23,7 @@ import {
     SimpleSelect,
     MostTestPositive,
     Composition,
-    TodaysDeath,
+    ChoroplethMap,
     PositiveTotalCases
 } from '../src/components';
 
@@ -127,7 +127,7 @@ const Page = ({ params }) => {
         <div>
             <Grid container spacing={2}>
 
-                <Grid item xs={12}>
+                <Grid item xs={12} >
                     <Typography
                         color="textPrimary"
                         ref={myHeader1Ref}
@@ -135,11 +135,12 @@ const Page = ({ params }) => {
                     </Typography>
                 </Grid>
 
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                     <Card>
                         <SimpleSelect />
                     </Card>
                 </Grid>
+                 */}
 
                 <Grid
                     item
@@ -177,6 +178,14 @@ const Page = ({ params }) => {
                 >
                     <Total data={stateUSData} />
                 </Grid>
+
+                <Grid xs={12} >
+                    <Container maxWidth="md" >
+                            <ChoroplethMap rawData={pieChartData} />
+                    </Container>
+                </Grid>
+
+
             </Grid>
 
             <Grid className={classes.section} container spacing={2}>
