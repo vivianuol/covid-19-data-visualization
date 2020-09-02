@@ -44,7 +44,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const DeathRate = props => {
+const DeathToll = props => {
   const { className, data, ...rest } = props;
 
   const classes = useStyles();
@@ -93,7 +93,7 @@ const DeathRate = props => {
                   gutterBottom
                   variant="body1"
               >
-                Mortality
+                Death Toll
               </Typography>
               <Typography
                   variant="h3"

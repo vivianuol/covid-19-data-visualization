@@ -331,16 +331,6 @@ const IncreasedCases = props => {
           >
           </div>
         </CardContent>
-        <Divider />
-        <CardActions className={classes.actions}>
-          <Button
-              color="primary"
-              size="small"
-              variant="text"
-          >
-            Overview 
-          </Button>
-        </CardActions>
       </Card>
   );
 };

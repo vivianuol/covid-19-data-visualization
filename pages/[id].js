@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import {
     Grid,
     Container,
-    Typography,
+    Card,
 } from '@material-ui/core';
 import theme from '../src/theme';
 // import Graphic from '../public/images/Webp.net-resizeimage-67.png';
@@ -15,9 +15,10 @@ import Router from 'next/router';
 import { useRouter } from 'next/router';
 
 import {
+    DashBoardHeader,
     TestPositive,
     Hospitalized,
-    DeathRate,
+    DeathToll,
     Total,
     IncreasedCases,
     SimpleSelect,
@@ -41,7 +42,11 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-
+const styling = {
+    backgroundImage: "url('/images/COVID-Graphic.jpg')",
+    width: "100%",
+    height: "100%"
+}
 
 const Page = ({ params }) => {
 
@@ -103,17 +108,17 @@ const Page = ({ params }) => {
                 var p = [...forBarChartsData];
                 setRechartData(p.reverse());
 
-                d3.select(myHeader1Ref.current)
-                    .text('COVID-19 Data Visualization Board')
-                    .style('font-size', '32px')
-                    .style('font-weight', 'bold')
-                    .style('font-family', '"Open Sans", verdana, arial, sans-serif')
-                    .append('p')
-                    .text(`updated at: ${forBarChartsData[0].dateChecked}`)
-                    .style('font-size', '12px')
-                    .style('padding', '8px')
-                    .append('p')
-                    .text('source: covidtracking.com')
+                //     d3.select(myHeader1Ref.current)
+                //         .text('COVID-19 Data Visualization Board')
+                //         .style('font-size', '32px')
+                //         .style('font-weight', 'bold')
+                //         .style('font-family', '"Open Sans", verdana, arial, sans-serif')
+                //         .append('p')
+                //         .text(`updated at: ${forBarChartsData[0].dateChecked}`)
+                //         .style('font-size', '12px')
+                //         .style('padding', '8px')
+                //         .append('p')
+                //         .text('source: covidtracking.com')
 
             })
 
@@ -127,35 +132,34 @@ const Page = ({ params }) => {
         <div>
             <Grid container spacing={2}>
 
-                <Grid item xs={12} >
-                    <Typography
+                <Grid item xs={12} style={styling}>
+                    {/* <Typography
                         color="textPrimary"
                         ref={myHeader1Ref}
                     >
-                    </Typography>
+                    </Typography> */}
+                    <DashBoardHeader data={stateUSData} />
                 </Grid>
 
-                {/* <Grid item xs={12}>
+                <Grid item xs={12}>
                     <Card>
                         <SimpleSelect />
                     </Card>
                 </Grid>
-                 */}
 
                 <Grid
                     item
                     lg={3}
                     sm={6}
-                    xl={3}
                     xs={12}
                 >
                     <TestPositive data={stateUSData} />
                 </Grid>
+
                 <Grid
                     item
                     lg={3}
                     sm={6}
-                    xl={3}
                     xs={12}
                 >
                     <Hospitalized data={stateUSData} />
@@ -164,46 +168,41 @@ const Page = ({ params }) => {
                     item
                     lg={3}
                     sm={6}
-                    xl={3}
                     xs={12}
                 >
-                    <DeathRate data={stateUSData} />
+                    <DeathToll data={stateUSData} />
                 </Grid>
                 <Grid
                     item
                     lg={3}
                     sm={6}
-                    xl={3}
                     xs={12}
                 >
                     <Total data={stateUSData} />
                 </Grid>
 
-                <Grid xs={12} >
-                    <Container maxWidth="md" >
-                            <ChoroplethMap rawData={pieChartData} />
-                    </Container>
-                </Grid>
-
-
             </Grid>
 
             <Grid className={classes.section} container spacing={2}>
+
+                <Grid item xs={12} >
+                    <Container maxWidth="md" >
+                        <ChoroplethMap rawData={pieChartData} />
+                    </Container>
+                </Grid>
 
                 {stateUS === 'ALL' ?
                     <Grid item
                         lg={4}
                         sm={12}
-                        xs={12}
                     >
                         <MostTestPositive rawData={pieChartData} />
                     </Grid> : <p></p>
                 }
                 {stateUS === 'ALL' ?
                     <Grid item
-                        lg={7}
+                        lg={8}
                         sm={12}
-                        xs={12}
                     >
                         <Composition rawData={pieChartData} />
                     </Grid> : <p></p>

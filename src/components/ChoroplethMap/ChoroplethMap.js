@@ -110,16 +110,16 @@ const MapChart = () => {
         json("https://api.covidtracking.com/v1/states/current.json")
             .then(states => {
 
-                console.log({ population: population });
+                //console.log({ population: population });
 
                 const formattedData = states.map(state => {
                     const findStateIdPair = stateIDPair.find(o => o.id === state.state);
                     const stateId = findStateIdPair.val;
-                    console.log({ findStateIdPair: findStateIdPair });
+                    //console.log({ findStateIdPair: findStateIdPair });
 
                     const findStatePopulationPair = population.find(o => o.ShortNames === state.state);
                     const statePopulation = findStatePopulationPair && findStatePopulationPair["Population Estimate"];
-                    console.log({ findStatePopulationPair: findStatePopulationPair });
+                    //console.log({ findStatePopulationPair: findStatePopulationPair });
 
                     return ({
                         id: stateId,
@@ -127,7 +127,7 @@ const MapChart = () => {
                     })
                 })
 
-                console.log({ formattedData: formattedData });
+                //console.log({ formattedData: formattedData });
 
                 setData(formattedData);
 
@@ -153,7 +153,7 @@ const MapChart = () => {
     return (
         <Card>
             <CardHeader
-                title="Positive Rate Map (population based)"
+                title="Current Positive Rate By State (per capita)"
             />
             <Divider />
             <CardContent>
